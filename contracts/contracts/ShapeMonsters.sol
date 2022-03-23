@@ -41,7 +41,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IERC2981, IERC165 } from "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-contract InvisibleFriends is ERC721, IERC2981, Ownable, ReentrancyGuard {
+contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
   using Strings for uint256;
 
   string public PROVENANCE_HASH;
@@ -67,7 +67,7 @@ contract InvisibleFriends is ERC721, IERC2981, Ownable, ReentrancyGuard {
     address _royalties,
     string memory _initialBaseURI,
     string memory _initialContractURI
-  ) ERC721("Invisible Friends", "INVSBLE") {
+  ) ERC721("Shape Monsters", "ShapeMonsters") {
     beneficiary = _beneficiary;
     royalties = _royalties;
     baseURI = _initialBaseURI;
