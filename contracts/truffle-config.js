@@ -1,7 +1,7 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 // Moonbeam Development Node Private Key
 const privateKeyDev =
-   '99B3C12287537E38C90A9219D4CB074A89A16E9CDB20BF85728EBD97C343E342';
+   '4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d';
 // Moonbase Alpha Private Key --> Please change this to your own Private Key with funds
 // NOTE: Do not store your private key in plaintext files
 //       this is only for demostration purposes only
@@ -49,7 +49,7 @@ module.exports = {
    // Solidity 0.7.0 Compiler
    compilers: {
       solc: {
-         version: '^0.7.0',
+         version: '^0.8.9',
       },
    },
    // Moonbeam Truffle Plugin & Truffle Plugin for Verifying Smart Contracts
