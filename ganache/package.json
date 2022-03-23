@@ -1,0 +1,12 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "ganache": "npx ganache-cli -v -h 0.0.0.0 -i='1337' -d -e 1000000000000 --gasLimit 0x7a1200 --port 8545"
+  },
+  "dependencies": {
+    "ganache": "^7.0.3"
+  }
+}

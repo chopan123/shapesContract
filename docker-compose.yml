@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  contracts:
+    image: node:14
+    env_file: .env
+    volumes:
+      - ./contracts/:/workspace
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    command: top
+    working_dir: /workspace
+    networks:
+      - shapes-network
+
+  ganache:
+     image: node:14
+     env_file: .env
+     volumes:
+       - ./ganache/:/workspace
+     command: yarn ganache
+     working_dir: /workspace
+     stdin_open: true # docker run -i
+     tty: true        # docker run -t
+     ports:
+      - 8545:8545
+     networks:
+      - shapes-network
+
+volumes:
+  instances:
+  excludeCore:
+  excludeProxyTrees:
+  redis-root-updater:
+
+networks:
+  shapes-network:
