@@ -16,7 +16,7 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   string public PROVENANCE_HASH;
 
-  uint256 constant MAX_SUPPLY = 5000;
+  uint256 constant MAX_SUPPLY = 2222;
   uint256 private _currentId;
 
   string public baseURI;
