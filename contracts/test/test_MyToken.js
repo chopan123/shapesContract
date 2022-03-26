@@ -55,21 +55,21 @@ contract('ShapeMonsters', accounts => {
 
       // Testing results
       // Minting
-      const mintListedResult = await shapeMonsters.mintListed(1, merkleProof, {value: toWei(price), from: whitelisted[0]}).should.be.fulfilled
+      const mintListedResult = await shapeMonsters.mintListed(1, merkleProof, {value: toWei(price), from: whitelisted[0]})
       console.log("mintListedResult:", mintListedResult)
+      assert.isDefined(mintListedResult.tx, 'Mint Listed should have a tx hash')
 
       // Minting with wrong value
-      const mintListedWrongValue = await shapeMonsters.mintListed(1, merkleProof, {value: toWei("0"), from: whitelisted[0]}).should.be.rejected
-      console.log("mintListedWrongValue:", mintListedWrongValue)
+      const mintListedWrongValue = await shapeMonsters.mintListed(1, merkleProof, {value: toWei("0"), from: whitelisted[0]})
+      // console.log("mintListedWrongValue:", mintListedWrongValue)
+      assert.isUndefined(mintListedWrongValue.tx, "minting with wrong value should be rejected")
+      assert(mintListedWrongValue.receipt.reason == 'Incorrect payable amount', "minting with wrong value should be rejected")
 
-      // await expect(shapeMonsters.mintListed(1,merkleProof,{value: toWei(price), from: whitelisted[0]})).to.not.be.rejected
-      // await expect(shapeMonsters.mintListed(1,merkleProof,{value: toWei(price), from: whitelisted[0]})).to.be.rejectedWith('already claimed')
-      // await expect(shapeMonsters.mintListed(1,invalidMerkleProof,{value: toWei(price), from: mint[0]})).to.be.rejectedWith('invalid merkle proof')
-
-      // Generate proofs for whitelisted and not whitelisted
-
-      // const shapesMonster = await ShapeMonsters.deployed()
-
+      // Not whitelisted tries to mint
+      const notWhitelistedTriesToMint = await shapeMonsters.mintListed(1,invalidMerkleProof,{value: toWei(price), from: mint[0]})
+      // console.log("notWhitelistedTriesToMint:", notWhitelistedTriesToMint)
+      assert.isUndefined(notWhitelistedTriesToMint.tx, "minting with wrong value should be rejected")
+      assert(notWhitelistedTriesToMint.receipt.reason == 'Invalid proof', "minting with wrong value should be rejected")
 
     });
 
