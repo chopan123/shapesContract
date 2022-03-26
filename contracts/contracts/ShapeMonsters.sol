@@ -22,12 +22,12 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
   string public baseURI;
   string private _contractURI;
 
-  bool public isActive = false;
+  bool public isWhitelistActive = false;
 
-  uint256 public price = 0.25 ether;
+  uint256 public whitelistPrice = 5 ether;
 
   bytes32 public merkleRoot;
-  mapping(address => uint256) private _alreadyMinted;
+  /* mapping(address => uint256) private _alreadyMinted; */
 
   address public beneficiary;
   address public royalties;
@@ -58,17 +58,17 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     royalties = _royalties;
   }
 
-  function setActive(bool _isActive) public onlyOwner {
-    isActive = _isActive;
+  function setWhitelistActive(bool _isActive) public onlyOwner {
+    isWhitelistActive = _isActive;
   }
 
   function setMerkleProof(bytes32 _merkleRoot) public onlyOwner {
     merkleRoot = _merkleRoot;
   }
 
-  function alreadyMinted(address addr) public view returns (uint256) {
+  /* function alreadyMinted(address addr) public view returns (uint256) {
     return _alreadyMinted[addr];
-  }
+  } */
 
   function totalSupply() public view returns (uint256) {
     return _currentId;
@@ -100,12 +100,12 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     ) public payable nonReentrant {
     address sender = _msgSender();
 
-    require(isActive, "Sale is closed");
+    require(isWhitelistActive, "Sale is closed");
     /* require(amount <= maxAmount - _alreadyMinted[sender], "Insufficient mints left"); */
     require(_verify(merkleProof, sender), "Invalid proof");
-    require(msg.value == price * amount, "Incorrect payable amount");
+    require(msg.value == whitelistPrice * amount, "Incorrect payable amount");
 
-    _alreadyMinted[sender] += amount;
+    /* _alreadyMinted[sender] += amount; */
     _internalMint(sender, amount);
   }
 
