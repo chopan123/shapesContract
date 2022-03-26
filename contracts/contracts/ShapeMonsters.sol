@@ -1,36 +1,6 @@
 pragma solidity ^0.8.9;
 
 /*
-                              ..............               ascii art by community member
-                        ..::....          ....::..                           rqueue#4071
-                    ..::..                        ::..
-                  ::..                              ..--..
-                ::..                  ....::..............::::..
-              ::                ..::::..                      ..::..
-            ....            ::::..                                ::::
-            ..        ..::..                                        ..::
-          ::      ..::..                                              ....
-        ....  ..::::                                                    ::
-        ::  ..  ..                                                        ::
-        ....    ::                                ....::::::::::..        ::
-        --::......                    ..::==--::::....          ..::..    ....
-      ::::  ..                  ..--..  ==@@++                      ::      ..
-      ::                    ..------      ++..                        ..    ..
-    ::                  ..::--------::  ::..    ::------..            ::::==++--..
-  ....                ::----------------    ..**%%##****##==        --######++**##==
-  ..              ::----------------..    ..####++..    --**++    ::####++::    --##==
-....          ..----------------..        **##**          --##--::**##++..        --##::
-..        ..--------------++==----------**####--          ..**++..::##++----::::::::****
-..    ::==------------++##############%%######..            ++**    **++++++------==**##
-::  ::------------++**::..............::**####..            ++**..::##..          ..++##
-::....::--------++##..                  ::####::          ::****++####..          ..**++
-..::  ::--==--==%%--                      **##++        ..--##++::####==          --##--
-  ::..::----  ::==                        --####--..    ::**##..  ==%%##::      ::****
-  ::      ::                                **####++--==####::      **%%##==--==####::
-    ::    ..::..                    ....::::..--########++..          ==**######++..
-      ::      ..::::::::::::::::::....      ..::::....                    ....
-        ::::..                      ....::....
-            ..::::::::::::::::::::....
 
  */
 
@@ -126,14 +96,13 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   function mintListed(
     uint256 amount,
-    bytes32[] calldata merkleProof,
-    uint256 maxAmount
-  ) public payable nonReentrant {
+    bytes32[] calldata merkleProof
+    ) public payable nonReentrant {
     address sender = _msgSender();
 
     require(isActive, "Sale is closed");
-    require(amount <= maxAmount - _alreadyMinted[sender], "Insufficient mints left");
-    require(_verify(merkleProof, sender, maxAmount), "Invalid proof");
+    /* require(amount <= maxAmount - _alreadyMinted[sender], "Insufficient mints left"); */
+    require(_verify(merkleProof, sender), "Invalid proof");
     require(msg.value == price * amount, "Incorrect payable amount");
 
     _alreadyMinted[sender] += amount;
@@ -161,10 +130,11 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   function _verify(
     bytes32[] calldata merkleProof,
-    address sender,
-    uint256 maxAmount
+    address sender
+    /* uint256 maxAmount */
   ) private view returns (bool) {
-    bytes32 leaf = keccak256(abi.encodePacked(sender, maxAmount.toString()));
+    bytes32 leaf = keccak256(abi.encodePacked(sender));
+    /* bytes32 leaf = keccak256(abi.encodePacked(sender, maxAmount.toString())); */
     return MerkleProof.verify(merkleProof, merkleRoot, leaf);
   }
 

@@ -1,14 +1,21 @@
 {
    "name": "moonbeam-truffle-box",
    "version": "1.0.0",
-   "scripts":{
-     "migrate:dev":"yarn truffle migrate --network dev"
+   "scripts": {
+      "migrate:dev": "yarn truffle migrate --network dev",
+      "test": "yarn truffle test --network dev"
    },
    "dependencies": {
       "@openzeppelin/contracts": "^4.4.1",
       "@truffle/hdwallet-provider": "=1.2.2",
+      "dotenv": "^16.0.0",
+      "merkletreejs": "^0.2.31",
       "moonbeam-truffle-plugin": ">=1.4.0",
       "truffle": "^5.1.66",
       "truffle-plugin-verify": "^0.5.21"
+   },
+   "devDependencies": {
+      "chai": "^4.3.6",
+      "chai-as-promised": "^7.1.1"
    }
 }

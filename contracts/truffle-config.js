@@ -1,4 +1,5 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+require('dotenv').config()  // store environment variables from '.env' to process.env
 // Moonbeam Development Node Private Key
 const privateKeyDev =
    '4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d';
@@ -19,7 +20,7 @@ module.exports = {
                );
             }
             return new HDWalletProvider(
-               privateKeyDev,
+               process.env.GANACHE_SEED_PHRASE,
                'http://ganache:8545/'
             );
          },
