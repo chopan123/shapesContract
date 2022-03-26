@@ -131,7 +131,7 @@ contract('ShapeMonsters', accounts => {
 
       // Minting
       const mint = await shapeMonsters.mint(1, {from: freeminted[0], value: toWei(price)})
-      console.log("mint:", mint)
+      // console.log("mint:", mint)
       assert.isDefined(mint.tx, 'Mint Listed should have a tx hash')
 
       // Minting
@@ -143,7 +143,7 @@ contract('ShapeMonsters', accounts => {
 
       // Not whitelisted tries to minted
       const mintWrongValue = await shapeMonsters.mint(2,{value: toWei(price), from: minted[0]})
-      console.log("mintWrongValue:", mintWrongValue)
+      // console.log("mintWrongValue:", mintWrongValue)
       assert.isUndefined(mintWrongValue.tx, "minting with wrong value should be rejected")
       assert(mintWrongValue.receipt.reason == 'Incorrect payable amount', "reason should be : Incorrect payable amount")
 
