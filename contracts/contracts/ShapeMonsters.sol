@@ -25,10 +25,12 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   bool public isWhitelistActive = false;
   bool public isFreemintActive = false;
+  bool public isMintActive = false;
 
   mapping(address => bool) private _alreadyMinted;
 
   uint256 public whitelistPrice = 5 ether;
+  uint256 public price = 8 ether;
 
   bytes32 public merkleRootWhitelist;
   bytes32 public merkleRootFreemint;
@@ -68,6 +70,10 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   function setFreemintActive(bool _isActive) public onlyOwner {
     isFreemintActive = _isActive;
+  }
+
+  function setMintActive(bool _isActive) public onlyOwner {
+    isMintActive = _isActive;
   }
 
   function setMerkleRootWhitelist(bytes32 _merkleRoot) public onlyOwner {
@@ -115,6 +121,17 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     require(isWhitelistActive, "Sale is closed");
     require(_verifyWhitelist(merkleProof, sender), "Invalid proof");
     require(msg.value == whitelistPrice * amount, "Incorrect payable amount");
+
+    _internalMint(sender, amount);
+  }
+
+  function mint(
+    uint256 amount
+    ) public payable nonReentrant {
+    address sender = _msgSender();
+
+    require(isMintActive, "Sale is closed");
+    require(msg.value == price * amount, "Incorrect payable amount");
 
     _internalMint(sender, amount);
   }
