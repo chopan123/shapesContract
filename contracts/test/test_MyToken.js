@@ -46,7 +46,7 @@ contract('ShapeMonsters', accounts => {
       const merkleRoot = tree.getHexRoot()
 
       // Set MerkleTree
-      await shapeMonsters.setMerkleProof(merkleRoot)
+      await shapeMonsters.setMerkleRootWhitelist(merkleRoot)
       const merkleProof = tree.getHexProof(keccak256(whitelisted[0]))
       const invalidMerkleProof = tree.getHexProof(keccak256(mint[0]))
 
