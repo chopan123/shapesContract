@@ -27,7 +27,6 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
   uint256 public whitelistPrice = 5 ether;
 
   bytes32 public merkleRootWhitelist;
-  /* mapping(address => uint256) private _alreadyMinted; */
 
   address public beneficiary;
   address public royalties;
@@ -66,9 +65,6 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     merkleRootWhitelist = _merkleRoot;
   }
 
-  /* function alreadyMinted(address addr) public view returns (uint256) {
-    return _alreadyMinted[addr];
-  } */
 
   function totalSupply() public view returns (uint256) {
     return _currentId;
@@ -101,11 +97,9 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     address sender = _msgSender();
 
     require(isWhitelistActive, "Sale is closed");
-    /* require(amount <= maxAmount - _alreadyMinted[sender], "Insufficient mints left"); */
     require(_verify(merkleProof, sender), "Invalid proof");
     require(msg.value == whitelistPrice * amount, "Incorrect payable amount");
 
-    /* _alreadyMinted[sender] += amount; */
     _internalMint(sender, amount);
   }
 
@@ -134,7 +128,6 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     /* uint256 maxAmount */
   ) private view returns (bool) {
     bytes32 leaf = keccak256(abi.encodePacked(sender));
-    /* bytes32 leaf = keccak256(abi.encodePacked(sender, maxAmount.toString())); */
     return MerkleProof.verify(merkleProof, merkleRootWhitelist, leaf);
   }
 
