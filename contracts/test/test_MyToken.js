@@ -60,11 +60,18 @@ contract('ShapeMonsters', accounts => {
       // console.log("mintListedResult:", mintListedResult)
       assert.isDefined(mintListedResult.tx, 'Mint Listed should have a tx hash')
 
+      // Minting
+      const mintListedAgain = await shapeMonsters.mintListed(1, merkleProof, {value: toWei(whitelistPrice), from: whitelisted[0]})
+      // console.log("mintListedAgain:", mintListedAgain)
+      assert.isUndefined(mintListedAgain.tx, "Second whitelist minting should be rejected rejected")
+      assert(mintListedAgain.receipt.reason == 'Already minted your Whitelist Spot', "minting with wrong value should be rejected")
+
       // Minting with wrong value
       const mintListedWrongValue = await shapeMonsters.mintListed(1, merkleProof, {value: toWei("0"), from: whitelisted[0]})
       // console.log("mintListedWrongValue:", mintListedWrongValue)
       assert.isUndefined(mintListedWrongValue.tx, "minting with wrong value should be rejected")
       assert(mintListedWrongValue.receipt.reason == 'Incorrect payable amount', "minting with wrong value should be rejected")
+
 
       // Not whitelisted tries to minted
       const notWhitelistedTriesToMint = await shapeMonsters.mintListed(1,invalidMerkleProof,{value: toWei(price), from: minted[0]})

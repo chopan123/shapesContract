@@ -28,6 +28,7 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
   bool public isMintActive = false;
 
   mapping(address => bool) private _alreadyMinted;
+  mapping(address => bool) private _alreadyWhitelistMinted;
 
   uint256 public whitelistPrice = 5 ether;
   uint256 public price = 8 ether;
@@ -121,20 +122,12 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     require(isWhitelistActive, "Sale is closed");
     require(_verifyWhitelist(merkleProof, sender), "Invalid proof");
     require(msg.value == whitelistPrice * amount, "Incorrect payable amount");
+    require(!_alreadyWhitelistMinted[sender], "Already minted your Whitelist Spot");
 
+    _alreadyWhitelistMinted[sender] = true;
     _internalMint(sender, amount);
   }
 
-  function mint(
-    uint256 amount
-    ) public payable nonReentrant {
-    address sender = _msgSender();
-
-    require(isMintActive, "Sale is closed");
-    require(msg.value == price * amount, "Incorrect payable amount");
-
-    _internalMint(sender, amount);
-  }
 
   function freeMint(
     bytes32[] calldata merkleProof
@@ -147,6 +140,17 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     _alreadyMinted[sender] = true;
     _internalMint(sender, 1);
   }
+
+  function mint(
+    uint256 amount
+    ) public payable nonReentrant {
+      address sender = _msgSender();
+
+      require(isMintActive, "Sale is closed");
+      require(msg.value == price * amount, "Incorrect payable amount");
+
+      _internalMint(sender, amount);
+    }
 
   function ownerMint(address to, uint256 amount) public onlyOwner {
     _internalMint(to, amount);
