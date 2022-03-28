@@ -1,4 +1,7 @@
 {
   "price":"8",
-  "whitelistPrice": "5"
+  "whitelistPrice": "5",
+  "baseURI":"https://api.shapes.monster/",
+  "contractURI":"https://api.shapes.monster/contract"
+
 }

@@ -3,5 +3,10 @@
     "deployer":"0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1",
     "beneficiary":"0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0",
     "royalties":"0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b"
+  },
+  "moonbeam":{
+    "deployer":"0xfa36992084B27f150b9104711168c8B9ba74756d",
+    "beneficiary":"0xB00862355b51d36F25D93AdDf45DEE27A5DDef14",
+    "royalties":"0x6c27ad58E3f7e8Cc363fB7BDDC6cb18b041e633D"
   }
 }
