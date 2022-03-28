@@ -7,7 +7,9 @@ const privateKeyDev =
 // NOTE: Do not store your private key in plaintext files
 //       this is only for demostration purposes only
 const privateKeyMoonbase =
-   'YOUR_PRIVATE_KEY_HERE_ONLY_FOR_DEMOSTRATION_PURPOSES';
+   process.env.PRIVATE_KEY;
+const privateKeyMoonbeam =
+      process.env.PRIVATE_KEY;
 
 module.exports = {
    networks: {
@@ -46,6 +48,25 @@ module.exports = {
             );
          },
          network_id: 1287,
+      },
+      moonbeam: {
+         provider: () => {
+            if (!privateKeyMoonbase.trim()) {
+               throw new Error(
+                  'Please enter a private key with funds to send transactions to TestNet'
+               );
+            }
+            if (privateKeyDev == privateKeyMoonbase) {
+               throw new Error(
+                  'Please change the private key used for Moonbase to your own with funds'
+               );
+            }
+            return new HDWalletProvider(
+               privateKeyMoonbeam,
+               'https://rpc.api.moonbeam.network'
+            );
+         },
+         network_id: 1284,
       },
    },
    // Solidity 0.7.0 Compiler
