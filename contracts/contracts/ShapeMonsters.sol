@@ -66,13 +66,14 @@ pragma solidity ^0.8.9;
  */
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { IERC2981, IERC165 } from "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
+contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard, ERC721Enumerable {
   using Strings for uint256;
 
   string public PROVENANCE_HASH;
@@ -149,7 +150,7 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
     return _alreadyMinted[addr];
   }
 
-  function totalSupply() public view returns (uint256) {
+  function totalSupply() public view override(ERC721Enumerable) returns (uint256) {
     return _currentId;
   }
 
@@ -250,7 +251,7 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
   }
   // ERC165
 
-  function supportsInterface(bytes4 interfaceId) public view override(ERC721, IERC165) returns (bool) {
+  function supportsInterface(bytes4 interfaceId) public view override(ERC721, IERC165, ERC721Enumerable) returns (bool) {
     return interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId);
   }
 
@@ -258,7 +259,16 @@ contract ShapeMonsters is ERC721, IERC2981, Ownable, ReentrancyGuard {
 
   function royaltyInfo(uint256 _tokenId, uint256 _salePrice) external view returns (address, uint256 royaltyAmount) {
     _tokenId; // silence solc warning
-    royaltyAmount = (_salePrice / 100) * 5;
+    royaltyAmount = (_salePrice / 100) * 3;
     return (royalties, royaltyAmount);
+  }
+
+  // ERC721Enumerable
+    function _beforeTokenTransfer(
+      address from,
+      address to,
+      uint256 tokenId
+  ) internal override(ERC721, ERC721Enumerable) {
+      super._beforeTokenTransfer(from, to, tokenId);
   }
 }
